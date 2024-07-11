@@ -35,3 +35,33 @@ class PasswordResetRequest(BaseModel):
 class PasswordResetConfirm(BaseModel):
     reset_token: str
     new_password: str
+
+class ProductBase(BaseModel):
+    name: str
+    description: str
+    price: float
+    quantity: int
+
+class ProductCreate(ProductBase):
+    pass
+
+class Product(ProductBase):
+    id: int
+
+    class Config:
+        orm_mode: True
+
+class OrderBase(BaseModel):
+    product_id: int
+    quantity: int
+    total_price: float
+
+class OrderCreate(OrderBase):
+    pass
+
+class Order(OrderBase):
+    id: int
+    product: Product
+
+    class Config:
+        orm_mode: True

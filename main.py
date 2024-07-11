@@ -84,3 +84,21 @@ def logout(current_user: schemas.User = Depends(get_current_user), token: str = 
     add_token_to_blacklist(token)
     logger.info("Logout attempt for user: %s", current_user.username)
     return {"msg": "Logout successful"}
+
+@app.post("/products/", response_model=schemas.Product)
+def create_product(product: schemas.ProductCreate, db: Session = Depends(get_db)):
+    return crud.create_product(db=db, product=product)
+
+@app.get("/products/", response_model=list[schemas.Product])
+def read_products(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    products = crud.get_products(db, skip=skip, limit=limit)
+    return products
+
+@app.post("/orders/", response_model=schemas.Order)
+def create_order(order: schemas.OrderCreate, db: Session = Depends(get_db)):
+    return crud.create_order(db=db, order=order)
+
+@app.get("/orders/", response_model=list[schemas.Order])
+def read_orders(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    orders = crud.get_orders(db, skip=skip, limit=limit)
+    return orders
